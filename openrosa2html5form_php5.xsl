@@ -97,7 +97,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
 				      });</xsl:text>
                 </script>
             </head>-->
-            <root>
+            <!--<root>-->
 	            <form autocomplete="off" novalidate="novalidate">
                     <xsl:attribute name="class">
                         <xsl:value-of select="'or clearfix'" />
@@ -202,7 +202,7 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
                         <xsl:message>ERROR: Submissions element(s) not supported yet.</xsl:message>
                     </xsl:if>
 	            </form>
-            </root>
+            <!--</root>-->
         </xsl:template>
 
     <xsl:template match="h:head"/> <!--[not(self::xf:model/xf:bind[@jr:preload])]" />-->

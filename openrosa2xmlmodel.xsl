@@ -35,11 +35,11 @@ inside Enketo Smart Paper.
     <xsl:output method="xml" indent="yes" omit-xml-declaration="yes" version="1.0" encoding="UTF-8" />
 
     <xsl:template match="/">
-    	<root>
+    	<!--<root>-->
             <model>
         	   <xsl:apply-templates select="//xf:model/xf:instance" />
             </model>
-        </root>
+        <!--</root>-->
     </xsl:template>
 
     <xsl:template match="*">
