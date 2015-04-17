@@ -528,11 +528,41 @@ XSLT Stylesheet that transforms OpenRosa style (X)Forms into valid HTMl5 forms
         </xsl:choose>
     </xsl:template>
     
+    <xsl:template name="string-replace-all">
+		<xsl:param name="text"/>
+		<xsl:param name="replace"/>
+		<xsl:param name="by"/>
+		<xsl:choose>
+			<xsl:when test="contains($text, $replace)">
+				<xsl:value-of select="substring-before($text,$replace)" />
+				<xsl:value-of select="$by" />
+				<xsl:call-template name="string-replace-all">
+					<xsl:with-param name="text"
+          select="substring-after($text,$replace)" />
+					<xsl:with-param name="replace" select="$replace" />
+					<xsl:with-param name="by" select="$by" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$text" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+    
     <xsl:template match="xf:itemset" mode="labels">
         <xsl:variable name="value-ref" select="./xf:value/@ref" />
         <xsl:variable name="label-ref" select="./xf:label/@ref" />
         <xsl:variable name="iwq" select="substring-before(substring-after(@nodeset, 'instance('),')/')" />
-        <xsl:variable name="instance-path" select="str:replace(substring-after(@nodeset, ')'), '/', '/xf:')" />
+        <!-- Here's how string-replace-all is called -->
+		<xsl:variable name="instance-path">
+			<xsl:call-template name="string-replace-all">
+				<xsl:with-param name="text" select="(substring-after(@nodeset, ')'))" />
+				<xsl:with-param name="replace" select="'/'" />
+				<xsl:with-param name="by" select="'/xf:'" />
+			</xsl:call-template>
+		</xsl:variable>
+        <!-- str:replace is not available in XSLT 1.0. instead i've used template "string-replace-all" takes 3 parameters-->
+        <!-- <xsl:variable name="instance-path" select="str:replace(substring-after(@nodeset, ')'), '/', '/xf:')" /> -->
         <xsl:variable name="instance-path-nofilter">
             <xsl:call-template name="strip-filter">
                 <xsl:with-param name="string" select="$instance-path"/>
